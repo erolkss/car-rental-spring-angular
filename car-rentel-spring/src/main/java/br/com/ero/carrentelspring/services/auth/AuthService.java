@@ -6,4 +6,6 @@ import br.com.ero.carrentelspring.dto.UserDto;
 public interface AuthService {
 
     UserDto createCustomer(SignupRequest signupRequest);
+
+    boolean hasCustomerWithEmail(String email);
 }
