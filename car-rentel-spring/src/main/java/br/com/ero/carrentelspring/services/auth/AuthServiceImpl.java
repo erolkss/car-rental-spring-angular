@@ -6,6 +6,7 @@ import br.com.ero.carrentelspring.entities.User;
 import br.com.ero.carrentelspring.enums.UserRole;
 import br.com.ero.carrentelspring.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,7 +20,7 @@ public class AuthServiceImpl implements AuthService{
         User user = new User();
         user.setName(signupRequest.getName());
         user.setEmail(signupRequest.getEmail());
-        user.setPassword(signupRequest.getPassword());
+        user.setPassword(new BCryptPasswordEncoder().encode(signupRequest.getPassword()));
         user.setUserRole(UserRole.CUSTOMER);
         User createUser = userRepository.save(user);
         UserDto userDto = new UserDto();
