@@ -45,7 +45,7 @@ export class LoginComponent {
         } else if (StorageService.isCustomerLoggedIn()) {
           this.router.navigateByUrl('/customer/dashboard');
         } else {
-          this.message.error('Bad Credentials', { nzDuration: 50000 });
+          this.message.error('Bad Credentials', { nzDuration: 5000 });
         }
       }
     });

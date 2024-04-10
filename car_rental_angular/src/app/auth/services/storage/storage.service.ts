@@ -1,14 +1,18 @@
 import { Injectable } from '@angular/core';
 
-const TOKEN = "token";
-const USER = "user";
+
+const TOKEN = 'token';
+const USER = 'user';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class StorageService {
 
-  constructor() { }
+
+  constructor() {
+
+  }
 
   static saveToken(token: string): void {
     window.localStorage.removeItem(TOKEN);
@@ -20,29 +24,34 @@ export class StorageService {
     window.localStorage.setItem(USER, JSON.stringify(user));
   }
 
-  static getToken(){
+  static getToken() {
     return window.localStorage.getItem(TOKEN);
   }
 
-  static getUser(){
+  static getUser() {
     return JSON.parse(localStorage.getItem(USER)!);
   }
 
-  static getUserRole():string{
+  static getUserRole(): string {
     const user = this.getUser();
-    if(user == null) return "";
+    if (user == null) return '';
     return user.role;
   }
 
-  static isAdminLoggedIn():boolean{
-    if(this.getToken() == null) return false;
-    const role : string = this.getUserRole();
-    return role == "ADMIN";
+  static isAdminLoggedIn(): boolean {
+    if (this.getToken() == null) return false;
+    const role: string = this.getUserRole();
+    return role == 'ADMIN';
   }
 
-  static isCustomerLoggedIn():boolean{
-    if(this.getToken() == null) return false;
-    const role : string = this.getUserRole();
-    return role == "CUSTOMER";
+  static isCustomerLoggedIn(): boolean {
+    if (this.getToken() == null) return false;
+    const role: string = this.getUserRole();
+    return role == 'CUSTOMER';
+  }
+
+  static logout(): void {
+    window.localStorage.removeItem(TOKEN);
+    window.localStorage.removeItem(USER);
   }
 }
