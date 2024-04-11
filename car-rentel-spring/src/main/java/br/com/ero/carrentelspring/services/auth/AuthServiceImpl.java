@@ -12,9 +12,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AuthServiceImpl implements AuthService{
-
-    private final UserRepository userRepository;
+    public class AuthServiceImpl implements AuthService{
+    
+        private final UserRepository userRepository;
 
     @PostConstruct
     public void createAdminAccount(){
