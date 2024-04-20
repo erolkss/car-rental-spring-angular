@@ -5,6 +5,7 @@ import br.com.ero.carrentelspring.services.jwt.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -29,17 +30,36 @@ public class WebSecurityConfiguration {
 
     private final UserService userService;
 
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//        http.csrf(AbstractHttpConfigurer::disable).authorizeHttpRequests(request ->
+//                        request.requestMatchers("/api/auth/**").permitAll()
+//                                .requestMatchers(HttpMethod.POST,"/api/admin/**").hasAnyAuthority(UserRole.ADMIN.name())
+//                                .requestMatchers(HttpMethod.POST,"/api/customer/**").hasAnyAuthority(UserRole.CUSTOMER.name())
+//                                .anyRequest().authenticated()).sessionManagement(manager ->
+//                        manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+//                .authenticationProvider(authenticationProvider())
+//                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+//        return http.build();
+//    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable).authorizeHttpRequests(request ->
-                        request.requestMatchers("/api/auth/**").permitAll()
-                                .requestMatchers("/api/admin/**").hasAnyAuthority(UserRole.ADMIN.name())
-                                .requestMatchers("/api/customer/**").hasAnyAuthority(UserRole.CUSTOMER.name())
-                                .anyRequest().authenticated()).sessionManagement(manager ->
-                        manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authenticationProvider(authenticationProvider())
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-        return http.build();
+        return http
+                .csrf(csrf -> csrf.disable())
+                .formLogin(form -> form.disable())
+                .httpBasic(basic -> basic.disable())
+                .authorizeHttpRequests( auth -> auth
+                        .requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/customer/**", "/api/admin/**").permitAll()
+                        .requestMatchers("/api/**").permitAll()
+                        .anyRequest().authenticated()
+                ).sessionManagement(
+                        session ->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                ).addFilterBefore(
+                        jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class
+                )
+                .build();
     }
 
     @Bean

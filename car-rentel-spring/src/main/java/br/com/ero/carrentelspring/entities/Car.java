@@ -19,10 +19,10 @@ public class Car {
     private String color;
     private String name;
     private String type;
-    private BigDecimal price;
+    private Long price;
     private String transmission;
     private String description;
     private Date year;
     @Column(columnDefinition = "longblob")
-    private byte[] image;
+    private byte[] img;
 }

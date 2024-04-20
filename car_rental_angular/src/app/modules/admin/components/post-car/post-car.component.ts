@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { AdminService } from '../../services/admin.service';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-post-car',
@@ -8,38 +12,43 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class PostCarComponent {
 
-  postCarForm!: FormGroup | any;
+  postCarForm!: FormGroup;
 
   isSpinning: boolean = false;
-  selectedFile: File;
+  selectedFile: File | null;
   imagePreview: string | ArrayBuffer | null;
 
-  listOfOption = Array<{label: string, value: string }>;
+  listOfOption: Array<{label: string; value: string}> = [];
   listOfBrands = ["BMW", "AUDI", "FERRARI", "TESLA", "VOLVO", "TOYOTA", "HONDA", "FORD", "NISSAN", "HYUNDAI", "LEXUS", "KIA"]
   listOfType = ["Petrol", "Hybrid", "Diesel", "Electric", "CNG"];
   listOfColor = ["Red", "White", "Blue", "Black", "Orange", "Grey", "Silver"];
   listOfTransmission = ["Manual", "Automatic"];
 
-  constructor(private fb: FormBuilder){}
+  constructor(private fb: FormBuilder,
+    private adminService: AdminService,
+    private message: NzMessageService,
+    private router: Router
+  ){}
 
   ngOnInit(){
     this.postCarForm = this.fb.group({
-      name: [null, Validators.required],
-      brand: [null, Validators.required],
-      type: [null, Validators.required],
-      color: [null, Validators.required],
-      transmission: [null, Validators.required],
-      price: [null, Validators.required],
-      description: [null, Validators.required],
-      year: [null, Validators.required]
+      name: [null, [Validators.required]],
+      brand: [null, [Validators.required]],
+      type: [null, [Validators.required]],
+      color: [null, [Validators.required]],
+      transmission: [null, [Validators.required]],
+      price: [null, [Validators.required]],
+      description: [null, [Validators.required]],
+      year: [null, [Validators.required]]
     })
   }
 
   postCar(){
     console.log(this.postCarForm.value);
+    this.isSpinning = true;
     const formData: FormData = new FormData();
     formData.append('img', this.selectedFile);
-    formData.append('brand', this.postCarForm.get('brand').value);
+    formData.append('brand ', this.postCarForm.get('brand').value);
     formData.append('name', this.postCarForm.get('name').value);
     formData.append('type', this.postCarForm.get('type').value);
     formData.append('color', this.postCarForm.get('color').value);
@@ -48,6 +57,14 @@ export class PostCarComponent {
     formData.append('description', this.postCarForm.get('description').value);
     formData.append('price', this.postCarForm.get('price').value);
     console.log(formData);
+    this.adminService.postCar(formData).subscribe((res) => {
+      this.isSpinning = false;
+      this.message.success("Car posted successfully", {nzDuration: 5000})
+      this.router.navigateByUrl("/admin/dashboard");
+      console.log(res);
+    }, error => {
+      this.message.error(`${error.error }`, {nzDuration: 5000})
+    })
 
   }
 

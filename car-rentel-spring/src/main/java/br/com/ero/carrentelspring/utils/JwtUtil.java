@@ -36,7 +36,9 @@ public class JwtUtil {
     }
 
     private String generateToken(Map<String, Object> extractClaims, UserDetails userDetails){
-        return Jwts.builder().setClaims(extractClaims).setSubject(userDetails.getUsername())
+        return Jwts.builder()
+                .setClaims(extractClaims)
+                .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
                 .signWith(getSigninKey(), SignatureAlgorithm.HS256).compact();
@@ -59,7 +61,8 @@ public class JwtUtil {
     }
 
     private Claims extractAllClaims(String token){
-        return Jwts.parserBuilder().setSigningKey(getSigninKey()).build().parseClaimsJws(token).getBody();
+        return Jwts.parserBuilder()
+                .setSigningKey(getSigninKey()).build().parseClaimsJws(token).getBody();
     }
 
     private Key getSigninKey(){
