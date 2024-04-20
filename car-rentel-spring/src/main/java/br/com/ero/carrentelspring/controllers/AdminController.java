@@ -26,4 +26,9 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+
+    @GetMapping("/cars")
+    public ResponseEntity<?> getAllCars(){
+        return ResponseEntity.ok(adminService.getAllCars());
+    }
 }
