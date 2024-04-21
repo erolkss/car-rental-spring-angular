@@ -30,37 +30,37 @@ public class WebSecurityConfiguration {
 
     private final UserService userService;
 
-//    @Bean
-//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        http.csrf(AbstractHttpConfigurer::disable).authorizeHttpRequests(request ->
-//                        request.requestMatchers("/api/auth/**").permitAll()
-//                                .requestMatchers(HttpMethod.POST,"/api/admin/**").hasAnyAuthority(UserRole.ADMIN.name())
-//                                .requestMatchers(HttpMethod.POST,"/api/customer/**").hasAnyAuthority(UserRole.CUSTOMER.name())
-//                                .anyRequest().authenticated()).sessionManagement(manager ->
-//                        manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//                .authenticationProvider(authenticationProvider())
-//                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-//        return http.build();
-//    }
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http
-                .csrf(csrf -> csrf.disable())
-                .formLogin(form -> form.disable())
-                .httpBasic(basic -> basic.disable())
-                .authorizeHttpRequests( auth -> auth
-                        .requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/customer/**", "/api/admin/**").permitAll()
-                        .requestMatchers("/api/**").permitAll()
-                        .anyRequest().authenticated()
-                ).sessionManagement(
-                        session ->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                ).addFilterBefore(
-                        jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class
-                )
-                .build();
+        http.csrf(AbstractHttpConfigurer::disable).authorizeHttpRequests(request ->
+                        request.requestMatchers("/api/auth/**").permitAll()
+                                .requestMatchers("/api/admin/**").hasAnyAuthority(UserRole.ADMIN.name())
+                                .requestMatchers("/api/customer/**").hasAnyAuthority(UserRole.CUSTOMER.name())
+                                .anyRequest().authenticated()).sessionManagement(manager ->
+                        manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authenticationProvider(authenticationProvider())
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        return http.build();
     }
+
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//        return http
+//                .csrf(csrf -> csrf.disable())
+//                .formLogin(form -> form.disable())
+//                .httpBasic(basic -> basic.disable())
+//                .authorizeHttpRequests( auth -> auth
+//                        .requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
+//                        .requestMatchers(HttpMethod.POST, "/api/customer/**", "/api/admin/**").permitAll()
+//                        .requestMatchers("/api/**").permitAll()
+//                        .anyRequest().authenticated()
+//                ).sessionManagement(
+//                        session ->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                ).addFilterBefore(
+//                        jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class
+//                )
+//                .build();
+//    }
 
     @Bean
     public PasswordEncoder   passwordEncoder() {

@@ -21,7 +21,7 @@ export class AdminService {
   getAllCars():Observable<any>{
     return this.http.get(BASIC_URL + "/api/admin/cars", {
       headers: this.createAuthorization()
-    })
+    });
   }
 
   deleteCar(id:number):Observable<any>{
@@ -29,6 +29,13 @@ export class AdminService {
       headers: this.createAuthorization()
     });
   }
+
+  getCarById(id: number):Observable<any>{
+    return this.http.get(BASIC_URL + "/api/admin/car/" + id, {
+      headers: this.createAuthorization()
+    });
+  }
+
 
   createAuthorization(): HttpHeaders{
     let authHeaders: HttpHeaders = new HttpHeaders();
