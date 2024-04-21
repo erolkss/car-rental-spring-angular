@@ -9,7 +9,7 @@
         <form nz-form [formGroup]="updateForm" >
           <div nz-row>
             <div class="file-upload-container">
-             <!--  <label for="file-upload-container">
+              <label for="file-upload-container">
                 <span style="margin-left: 100px">Select a File</span>
                 <input
                   type="file"
@@ -28,7 +28,7 @@
                     class="preview-image"
                   />
                 </div>
-              </div> -->
+              </div>
 
               <div *ngIf="existingImage" class="image-preview">
                 <div class="circle-image">
@@ -125,6 +125,7 @@
               nz-button
               class="login-form-button login-form-margin"
               [nzType]="'primary'"
+              (click)="updateCar()"
             >
               Update
             </button>
