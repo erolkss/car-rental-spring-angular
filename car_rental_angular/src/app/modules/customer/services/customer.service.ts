@@ -20,6 +20,12 @@ export class CustomerService {
     });
   }
 
+  getCarById(carId: number):Observable<any>{
+    return this.http.get(BASIC_URL + "/api/customer/car/" + carId, {
+      headers: this.createAuthorization()
+    });
+  }
+
   createAuthorization(): HttpHeaders{
     let authHeaders: HttpHeaders = new HttpHeaders();
     return authHeaders.set(
