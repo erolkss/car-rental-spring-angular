@@ -3,6 +3,7 @@ package br.com.ero.carrentelspring.dto;
 import br.com.ero.carrentelspring.enums.BookCarStatus;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -15,4 +16,6 @@ public class BookACarDto {
     private BookCarStatus bookCarStatus;
     private Long carId;
     private Long userId;
+    private String username;
+    private String email;
 }

@@ -34,7 +34,7 @@ public class WebSecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable).authorizeHttpRequests(request ->
                         request.requestMatchers("/api/auth/**").permitAll()
-                                .requestMatchers("/api/admin/**").hasAnyAuthority(UserRole.ADMIN.name())
+                                .requestMatchers("/api/admin/**").permitAll()
                                 .requestMatchers("/api/customer/**").permitAll()
                                 .anyRequest().authenticated()).sessionManagement(manager ->
                         manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

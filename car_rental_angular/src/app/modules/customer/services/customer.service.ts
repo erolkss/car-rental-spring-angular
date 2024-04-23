@@ -38,6 +38,11 @@ export class CustomerService {
       'Authorization',
       'Bearer ' + StorageService.getToken()
     );
+  }
 
+  getBookingsByUserId():Observable<any>{
+    return this.http.get(BASIC_URL + "/api/customer/car/bookings/" + StorageService.getUserId(), {
+      headers: this.createAuthorization()
+    });
   }
 }
