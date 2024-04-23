@@ -1,0 +1,52 @@
+<div class="inner-content">
+  <nz-spin [nzSpinning]="isSpinning" [nzSize]="'large'" nzTip="Working...">
+    <div class="dashboard-filet">
+      <div class="filter-grip" [formGroup]="searchCarForm">
+        <div class="filter-select-dropt  filter-fields-width">
+
+          <nz-form-item>
+            <nz-form-label nzFor="gender">Brand</nz-form-label>
+            <nz-form-control nzErrorTip="This input is required!">
+              <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select a Brand" formControlName="brand">
+                <nz-option *ngFor="let brand of listOfBrands" nzLabel="{{brand}}" nzValue="{{brand}}"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-label nzFor="studentClass">Type</nz-form-label>
+            <nz-form-control nzErrorTip="This input is required!">
+              <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select a Type" formControlName="type">
+                <nz-option *ngFor="let type of listOfType" nzLabel="{{type}}" nzValue="{{type}}"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-label nzFor="gender">Color</nz-form-label>
+            <nz-form-control nzErrorTip="This input is required!">
+              <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select a Color" formControlName="color">
+                <nz-option *ngFor="let color of listOfColor" nzLabel="{{color}}" nzValue="{{color}}"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-label nzFor="studentClass">Transmission</nz-form-label>
+            <nz-form-control nzErrorTip="This input is required!">
+              <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select a Transmission" formControlName="transmission">
+                <nz-option *ngFor="let transmission of listOfTransmission" nzLabel="{{transmission}}" nzValue="{{transmission}}"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+
+
+        </div>
+
+        <div class="filter-select-dropt  filter-fields-width">
+          <button class="filterBtn" nz-button nzType="primary" (click)="searchCar()">Search Car</button>
+        </div>
+      </div>
+    </div>
+  </nz-spin>
+</div>
