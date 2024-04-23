@@ -2,6 +2,8 @@ package br.com.ero.carrentelspring.services.customer;
 
 import br.com.ero.carrentelspring.dto.BookACarDto;
 import br.com.ero.carrentelspring.dto.CarDto;
+import br.com.ero.carrentelspring.dto.CarDtoListDto;
+import br.com.ero.carrentelspring.dto.SearchCarDto;
 import br.com.ero.carrentelspring.entities.BookACar;
 import br.com.ero.carrentelspring.entities.Car;
 import br.com.ero.carrentelspring.entities.User;
@@ -10,6 +12,8 @@ import br.com.ero.carrentelspring.repositories.BookACarRepository;
 import br.com.ero.carrentelspring.repositories.CarRepository;
 import br.com.ero.carrentelspring.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -65,6 +69,26 @@ public class CustomerServiceImpl implements CustomerService{
     @Override
     public List<BookACarDto> getBookingsByUserId(Long userId) {
         return bookACarRepository.findAllByUserId(userId).stream().map((BookACar::getBookACarDto)).collect(Collectors.toList());
+    }
+
+    @Override
+    public CarDtoListDto searchCar(SearchCarDto searchCarDto) {
+        Car car = new Car();
+        car.setBrand(searchCarDto.getBrand());
+        car.setType(searchCarDto.getType());
+        car.setTransmission(searchCarDto.getTransmission());
+        car.setColor(searchCarDto.getColor());
+        ExampleMatcher exampleMatcher =
+                ExampleMatcher.matchingAll()
+                        .withMatcher("brand", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+                        .withMatcher("type", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+                        .withMatcher("transmission", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+                        .withMatcher("colo", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase());
+        Example<Car> carExample = Example.of(car, exampleMatcher);
+        List<Car> carList = carRepository.findAll(carExample);
+        CarDtoListDto carDtoListDto = new CarDtoListDto();
+        carDtoListDto.setCarDtoList(carList.stream().map(Car::getCarDto).collect(Collectors.toList()));
+        return carDtoListDto;
     }
 
 }
