@@ -48,17 +48,24 @@ public class AdminController {
 
     @PutMapping("/car/{id}")
     public ResponseEntity<Void> updateCar(@PathVariable Long id, @ModelAttribute CarDto carDto) throws IOException {
-            boolean success = adminService.updateCar(id, carDto);
-            if (success) {
-                return ResponseEntity.status(HttpStatus.OK).build();
-            } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-            }
+        boolean success = adminService.updateCar(id, carDto);
+        if (success) {
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
 
     }
 
     @GetMapping("/car/bookings")
-    public ResponseEntity<List<BookACarDto>> getBookings(){
+    public ResponseEntity<List<BookACarDto>> getBookings() {
         return ResponseEntity.ok(adminService.getBookings());
+    }
+
+    @GetMapping("/car/booking/{bookingId}/{status}")
+    public ResponseEntity<?> changeBookingStatus(@PathVariable Long bookingId, @PathVariable String status) {
+        boolean success = adminService.changeBookingStatus(bookingId, status);
+        if (success) return ResponseEntity.ok().build();
+        return ResponseEntity.notFound().build();
     }
 }

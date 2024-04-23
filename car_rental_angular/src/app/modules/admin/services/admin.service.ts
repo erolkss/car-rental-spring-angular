@@ -48,6 +48,12 @@ export class AdminService {
     });
   }
 
+  changeBookingStatus(bookingId: number, status: string):Observable<any>{
+    return this.http.get(BASIC_URL + `/api/admin/car/booking/${bookingId}/${status}`, {
+      headers: this.createAuthorization()
+    });
+  }
+
 
   createAuthorization(): HttpHeaders{
     let authHeaders: HttpHeaders = new HttpHeaders();
