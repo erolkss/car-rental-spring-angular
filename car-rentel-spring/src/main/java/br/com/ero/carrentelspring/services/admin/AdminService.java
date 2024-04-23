@@ -2,6 +2,8 @@ package br.com.ero.carrentelspring.services.admin;
 
 import br.com.ero.carrentelspring.dto.BookACarDto;
 import br.com.ero.carrentelspring.dto.CarDto;
+import br.com.ero.carrentelspring.dto.CarDtoListDto;
+import br.com.ero.carrentelspring.dto.SearchCarDto;
 
 import java.io.IOException;
 import java.util.List;
@@ -21,5 +23,7 @@ public interface AdminService {
     List<BookACarDto> getBookings();
 
     boolean changeBookingStatus(Long bookingId, String status);
+
+    CarDtoListDto searchCar(SearchCarDto searchCarDto);
 
 }
