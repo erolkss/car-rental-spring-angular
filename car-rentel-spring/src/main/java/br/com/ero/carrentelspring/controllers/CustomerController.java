@@ -33,7 +33,7 @@ public class CustomerController {
     @GetMapping("/car/{carId}")
     public ResponseEntity<CarDto> getCarById(@PathVariable Long carId) {
         CarDto carDto = customerService.getCarById(carId);
-        if (carDto == null) return ResponseEntity.notFound().build();
+        if (carDto == null){ return ResponseEntity.notFound().build();}
         return ResponseEntity.ok(carDto);
     }
 }
