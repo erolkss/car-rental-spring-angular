@@ -1,5 +1,6 @@
 package br.com.ero.carrentelspring.controllers;
 
+import br.com.ero.carrentelspring.dto.BookACarDto;
 import br.com.ero.carrentelspring.dto.CarDto;
 import br.com.ero.carrentelspring.services.admin.AdminService;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -44,17 +46,19 @@ public class AdminController {
         return ResponseEntity.ok(carDto);
     }
 
-    @PutMapping("/car/{carId}")
-    public ResponseEntity<Void> updateCar(@PathVariable Long carId, @ModelAttribute CarDto carDto) {
-        try {
-            boolean success = adminService.updateCar(carId, carDto);
+    @PutMapping("/car/{id}")
+    public ResponseEntity<Void> updateCar(@PathVariable Long id, @ModelAttribute CarDto carDto) throws IOException {
+            boolean success = adminService.updateCar(id, carDto);
             if (success) {
                 return ResponseEntity.status(HttpStatus.OK).build();
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             }
-        } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+
+    }
+
+    @GetMapping("/car/bookings")
+    public ResponseEntity<List<BookACarDto>> getBookings(){
+        return ResponseEntity.ok(adminService.getBookings());
     }
 }

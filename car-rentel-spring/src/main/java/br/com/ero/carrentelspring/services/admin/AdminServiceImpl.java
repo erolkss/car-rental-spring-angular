@@ -1,7 +1,10 @@
 package br.com.ero.carrentelspring.services.admin;
 
+import br.com.ero.carrentelspring.dto.BookACarDto;
 import br.com.ero.carrentelspring.dto.CarDto;
+import br.com.ero.carrentelspring.entities.BookACar;
 import br.com.ero.carrentelspring.entities.Car;
+import br.com.ero.carrentelspring.repositories.BookACarRepository;
 import br.com.ero.carrentelspring.repositories.CarRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +19,7 @@ import java.util.stream.Collectors;
 public class AdminServiceImpl implements AdminService {
 
     private final CarRepository carRepository;
+    private final BookACarRepository bookACarRepository;
 
     @Override
     public boolean postCar(CarDto carDto) throws IOException {
@@ -75,5 +79,10 @@ public class AdminServiceImpl implements AdminService {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public List<BookACarDto> getBookings() {
+        return bookACarRepository.findAll().stream().map(BookACar::getBookACarDto).collect(Collectors.toList());
     }
 }

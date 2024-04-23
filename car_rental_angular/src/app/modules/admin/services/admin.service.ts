@@ -36,8 +36,14 @@ export class AdminService {
     });
   }
 
-  updateCar(carId: number, carDto: any): Observable<any> {
-    return this.http.put(BASIC_URL + "/api/admin/car/" + carId, carDto, {
+  updateCar(id: number, carDto: any): Observable<any> {
+    return this.http.put(BASIC_URL + "/api/admin/car/" + id, carDto, {
+      headers: this.createAuthorization()
+    });
+  }
+
+  getCarBookings():Observable<any>{
+    return this.http.get(BASIC_URL + "/api/admin/car/bookings", {
       headers: this.createAuthorization()
     });
   }

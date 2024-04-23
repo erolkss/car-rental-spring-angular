@@ -1,5 +1,6 @@
 package br.com.ero.carrentelspring.services.admin;
 
+import br.com.ero.carrentelspring.dto.BookACarDto;
 import br.com.ero.carrentelspring.dto.CarDto;
 
 import java.io.IOException;
@@ -16,5 +17,7 @@ public interface AdminService {
     CarDto getCarById(Long id);
 
     boolean updateCar (Long id, CarDto carDto) throws IOException;
+
+    List<BookACarDto> getBookings();
 
 }
