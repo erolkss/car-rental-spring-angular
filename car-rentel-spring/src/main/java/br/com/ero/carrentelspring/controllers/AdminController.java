@@ -6,7 +6,6 @@ import br.com.ero.carrentelspring.dto.SearchCarDto;
 import br.com.ero.carrentelspring.services.admin.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,14 +46,16 @@ public class AdminController {
         return ResponseEntity.ok(carDto);
     }
 
-    @PutMapping("/car/{id}")
-    public ResponseEntity<Void> updateCar(@PathVariable Long id, @ModelAttribute CarDto carDto) throws IOException {
-        boolean success = adminService.updateCar(id, carDto);
-        if (success) {
-            return ResponseEntity.status(HttpStatus.OK).build();
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+    @PutMapping("/car/{carId}")
+    public ResponseEntity<?> updateCar(@PathVariable Long carId, @ModelAttribute CarDto carDto) throws IOException {
+
+            boolean success = adminService.updateCar(carId, carDto);
+            if (success) {
+                return ResponseEntity.status(HttpStatus.OK).build();
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
+
 
     }
 

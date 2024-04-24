@@ -6,7 +6,7 @@
           <h2 style="margin-left: 120px">Post Car</h2>
         </div>
 
-        <form nz-form [formGroup]="updateForm" >
+        <form nz-form [formGroup]="updateForm">
           <div nz-row>
             <div class="file-upload-container">
               <label for="file-upload-container">
@@ -97,7 +97,7 @@
             <div nz-col nzSpan="24">
               <nz-form-item>
                 <nz-form-control nzHasFeedback [nzXs]="24" nzErrorTip="This input is required!">
-                  <nz-year-picker nzPlaceHolder="Model Year" formControlName="year" style="width: 100%;"></nz-year-picker>
+                  <nz-date-picker nzPlaceHolder="Model Year" formControlName="year" style="width: 100%;"></nz-date-picker>
                 </nz-form-control>
               </nz-form-item>
             </div>
@@ -122,10 +122,11 @@
 
 
             <button
+              (click)="updateCar()"
               nz-button
               class="login-form-button login-form-margin"
               [nzType]="'primary'"
-              (click)="updateCar()"
+
             >
               Update
             </button>

@@ -15,6 +15,8 @@ import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -65,13 +67,10 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public boolean updateCar(Long id, CarDto carDto) throws IOException {
-        Optional<Car> optionalCar = carRepository.findById(id);
+    public boolean updateCar(Long carId, CarDto carDto) throws IOException {
+        Optional<Car> optionalCar = carRepository.findById(carId);
         if (optionalCar.isPresent()) {
             Car existingCar = optionalCar.get();
-            if (carDto.getImg() != null) {
-                existingCar.setImg(carDto.getImg().getBytes());
-            }
             existingCar.setPrice(carDto.getPrice());
             existingCar.setYear(carDto.getYear());
             existingCar.setType(carDto.getType());
@@ -80,6 +79,13 @@ public class AdminServiceImpl implements AdminService {
             existingCar.setColor(carDto.getColor());
             existingCar.setName(carDto.getName());
             existingCar.setBrand(carDto.getBrand());
+
+
+
+            if (carDto.getImg() != null) {
+                existingCar.setImg(carDto.getImg().getBytes());
+            }
+
             carRepository.save(existingCar);
             return true;
         } else {

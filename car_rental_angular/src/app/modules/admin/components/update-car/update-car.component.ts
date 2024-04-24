@@ -2,8 +2,6 @@ import { Component } from '@angular/core';
 import { AdminService } from '../../services/admin.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { throws } from 'assert';
-import { read } from 'fs';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
@@ -46,26 +44,15 @@ export class UpdateCarComponent {
       price: [null, Validators.required],
       description: [null, Validators.required],
       year: [null, Validators.required],
-    })
+    });
     this.getCarById();
   }
 
-  getCarById() {
-    this.isSpinning = true;
-    this.adminService.getCarById(this.carId).subscribe((res) => {
-      this.isSpinning = false;
-      const carDto = res;
-      this.existingImage = 'data:image/jpeg;base64,' + res.returnedImage;
-      this.updateForm.patchValue(carDto);
-
-    })
-  }
 
   updateCar(){
-    console.log(this.updateForm.value);
     this.isSpinning = true;
     const formData: FormData = new FormData();
-    if (this.imgChanged && this.selectedFile) {
+    if (this.imgChanged && this.selectedFile){
       formData.append('img', this.selectedFile);
     }
     formData.append('brand ', this.updateForm.get('brand').value);
@@ -76,14 +63,23 @@ export class UpdateCarComponent {
     formData.append('transmission', this.updateForm.get('transmission').value);
     formData.append('description', this.updateForm.get('description').value);
     formData.append('price', this.updateForm.get('price').value);
-    console.log(formData);
+
     this.adminService.updateCar(this.carId, formData).subscribe((res) => {
       this.isSpinning = false;
       this.message.success("Car update successfully", {nzDuration: 5000})
       this.router.navigateByUrl("/admin/dashboard");
       console.log(res);
     }, error => {
-      this.message.error(`Error while updating car`, {nzDuration: 5000})
+      this.message.error(`${error.error }`, {nzDuration: 5000})
+    })
+  }
+  getCarById() {
+    this.isSpinning = true;
+    this.adminService.getCarById(this.carId).subscribe(res => {
+      this.isSpinning = false;
+      const carDto = res;
+      this.existingImage = 'data:image/jpeg;base64,' + res.returnedImage;
+      this.updateForm.patchValue(carDto);
     })
   }
 
@@ -93,6 +89,8 @@ export class UpdateCarComponent {
     this.existingImage = null;
     this.previewImage();
   }
+
+
   previewImage() {
     const reader  = new FileReader();
     reader.onload = () => {

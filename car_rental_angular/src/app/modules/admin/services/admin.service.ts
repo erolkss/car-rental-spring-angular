@@ -10,6 +10,7 @@ const BASIC_URL = "http://localhost:8080"
 })
 export class AdminService {
 
+
   constructor(private http: HttpClient) { }
 
   postCar(carDto: any): Observable<any>{
@@ -36,11 +37,6 @@ export class AdminService {
     });
   }
 
-  updateCar(id: number, carDto: any): Observable<any> {
-    return this.http.put(BASIC_URL + "/api/admin/car/" + id, carDto, {
-      headers: this.createAuthorization()
-    });
-  }
 
   getCarBookings():Observable<any>{
     return this.http.get(BASIC_URL + "/api/admin/car/bookings", {
@@ -54,6 +50,18 @@ export class AdminService {
     });
   }
 
+  searchCar(searchCarDto: any): Observable<any>{
+    return this.http.post(BASIC_URL + "/api/admin/car/search", searchCarDto,{
+      headers: this.createAuthorization()
+    });
+  }
+
+  updateCar(carId: number, carDto:any): Observable<any>{
+    return this.http.put(BASIC_URL + `/api/admin/car/${carId}`, carDto, {
+      headers: this.createAuthorization()
+    });
+  }
+
 
   createAuthorization(): HttpHeaders{
     let authHeaders: HttpHeaders = new HttpHeaders();
@@ -61,13 +69,8 @@ export class AdminService {
       'Authorization',
       'Bearer ' + StorageService.getToken()
     );
-
   }
 
-  searchCar(searchCarDto: any): Observable<any>{
-    return this.http.post(BASIC_URL + "/api/admin/car/search", searchCarDto,{
-      headers: this.createAuthorization()
-    });
-  }
+
 
 }
